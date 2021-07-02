@@ -2,6 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const Todo = require("./models/todo")
+const todo = require("./models/todo")
 
 mongoose.connect("mongodb://localhost/todo-demo", {
   useNewUrlParser: true,
@@ -60,6 +61,12 @@ router.patch("/todos/:todoId", async (req, res) => {
 
   res.send({});
 });
+// 할 일 삭제하기
+router.delete("/todos/:todoId", async (req, res) => {
+  const { todoId } = req.params
+  await Todo.findByIdAndDelete(todoId)
+  res.send({})
+})
 
 app.use("/api", bodyParser.json(), router)
 app.use(express.static("./assets"))
